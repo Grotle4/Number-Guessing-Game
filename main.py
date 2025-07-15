@@ -7,7 +7,11 @@ random_num = random.randint(1,100)
 guess_correct = False
 
 def check_diffculty():
-    user = input("please select a difficulty(easy/medium/hard): ")
+    print("Please select a difficulty level:")
+    print("Easy   (10 chances)")
+    print("Medium (5 chances)")
+    print("Hard   (3 chances)")
+    user = input("Please input a difficulty: ")
     user_diff = user.lower()
     match user_diff:
         case "easy":
@@ -17,10 +21,10 @@ def check_diffculty():
             print("You have selected medium difficulty")
             return 5
         case "hard":
-            print("You have selected easy difficulty")
+            print("You have selected hard difficulty")
             return 3
         case _:
-            print("Difficulty selected is invalid")
+            print("Difficulty selected is invalid, please select Easy, Medium or Hard")
 
 
 def check_range(number, start, stop):
@@ -55,19 +59,10 @@ def select_number(chances):
                 case "Below range":
                     print("This number is below than 100, Try again")
                     continue
-
-            
         except ValueError:
             print("Value selected is not a whole number, try again")
 
 print(random_num)
 chances = check_diffculty()
 select_number(chances)
-#while chances > 0:
-#    if guess_correct == False:
-#        print(f"You have {chances} attemps remaining.")
-#        select_number(guess_correct)
-#        
-#    else:
-#        print("You won!")
 
