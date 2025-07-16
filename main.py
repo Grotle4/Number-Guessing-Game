@@ -89,3 +89,4 @@ while is_playing:
     chances = check_difficulty()
     is_playing = select_number(chances)
 
+## Need to add still, timer, hint system, user high score
