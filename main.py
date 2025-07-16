@@ -6,7 +6,7 @@ print("Welcome to the number guessing game!")
 guess_correct = False
 is_playing = True
 
-def check_diffculty():
+def check_difficulty():
     print("Please select a difficulty level:")
     print("Easy   (10 chances)")
     print("Medium (5 chances)")
@@ -34,54 +34,49 @@ def check_range(number, start, stop):
     else:
         return "Above range"
     
-def restart_game(is_still_playing):
+def restart_game():
+    print("WORKING")
     play_again = input("Would you like to begin a new round?").lower()
     match play_again:
         case "yes":
             print("You will begin the next round!")
-            chances = check_diffculty()
-            select_number(chances,is_playing)
-            is_still_playing = True
-            return is_still_playing
+            return True
         case "no":
             print("game is over")
-            is_still_playing = False
-            return is_still_playing
+            return False
         case _ :
             print("not a valid command")
 
-def select_number(chances,start_playing):
+def select_number(chances):
     random_num = random.randint(1,100)
     print(random_num)
-    if start_playing == True:
-        while chances > 0:
-            try:
-                print("")
-                print(f"You have {chances} attemps remaining.")
-                selected_num = int(input("Please select a number between 1 and 100: "))
-                value_range = check_range(selected_num, 1, 100)
-                match value_range:
-                    case "Within range":
-                        if selected_num == random_num:
-                            print("that is correct, yippie :D")
-                            start_playing = restart_game(is_playing)
-                        elif random_num >= selected_num:
-                            print(f"The number is greater than {selected_num}")
-                            chances -= 1
-                        elif random_num <= selected_num:
-                            print(f"The number is less than {selected_num}")
-                            chances -= 1
-                    case "Above range":
-                        print("This number is greater than 100, Try again")
-                        continue
-                    case "Below range":
-                        print("This number is below than 100, Try again")
-                        continue
-            except ValueError:
-                print("Value selected is not a whole number, try again")
-    else:
-        pass
+    while chances > 0:
+        try:
+            print("")
+            print(f"You have {chances} attempts remaining.")
+            selected_num = int(input("Please select a number between 1 and 100: "))
+            value_range = check_range(selected_num, 1, 100)
+            match value_range:
+                case "Within range":
+                    if selected_num == random_num:
+                        print("That is correct, yippie :D")
+                        return restart_game() #can return function
+                    elif random_num > selected_num:
+                        print(f"The number is greater than {selected_num}")
+                        chances -= 1
+                    elif random_num < selected_num:
+                        print(f"The number is less than {selected_num}")
+                        chances -= 1
+                case "Above range":
+                    print("This number is greater than 100, Try again")
+                    continue
+                case "Below range":
+                    print("This number is below 1, Try again")
+                    continue
+        except ValueError:
+            print("Value selected is not a whole number, try again")
 
-chances = check_diffculty()
-select_number(chances,is_playing)
+while is_playing:
+    chances = check_difficulty()
+    is_playing = select_number(chances)
 
