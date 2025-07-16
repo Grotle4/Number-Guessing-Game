@@ -38,7 +38,7 @@ def check_range(number, start, stop):
         return "Above range"
     
 def restart_game():
-    play_again = input("Would you like to begin a new round?").lower()
+    play_again = input("Would you like to begin a new round? ").lower()
     match play_again:
         case "yes":
             print("You will begin the next round!")
