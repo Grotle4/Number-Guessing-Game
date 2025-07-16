@@ -82,6 +82,8 @@ def select_number(chances):
                     continue
         except ValueError:
             print("Value selected is not a whole number, try again")
+    print(f"Out of chances! The number was {random_num}")
+    return restart_game()
 
 while is_playing:
     chances = check_difficulty()
