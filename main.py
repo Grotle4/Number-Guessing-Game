@@ -1,4 +1,6 @@
 import random
+import time
+import math
 
 
 
@@ -12,20 +14,21 @@ def check_difficulty():
     print("Medium (5 chances)")
     print("Hard   (3 chances)")
     user = input("Please input a difficulty: ")
+    start_time = time.time()
     user_diff = user.lower()
     match user_diff:
         case "easy":
             print("")
             print("You have selected easy difficulty")
-            return 10
+            return 10, start_time
         case "medium":
             print("")
             print("You have selected medium difficulty")
-            return 5
+            return 5, start_time
         case "hard":
             print("")
             print("You have selected hard difficulty")
-            return 3
+            return 3, start_time
         case _:
             print("Difficulty selected is invalid, please select Easy, Medium or Hard")
 
@@ -50,7 +53,7 @@ def restart_game():
         case _ :
             print("not a valid command")
 
-def select_number(chances):
+def select_number(chances, start_time):
     random_num = random.randint(1,100)
     print(random_num)
     while chances > 0:
@@ -64,7 +67,8 @@ def select_number(chances):
                     if selected_num == random_num:
                         print("")
                         print("That is correct, yippie :D")
-                        print("")
+                        elasped_time = math.ceil(time.time() - start_time)
+                        game_timer(elasped_time)
                         return restart_game()
                     elif random_num > selected_num:
                         print("")
@@ -85,8 +89,23 @@ def select_number(chances):
     print(f"Out of chances! The number was {random_num}")
     return restart_game()
 
+def game_timer(end_time):
+    match end_time:
+        case 1:
+            print(f"You took {end_time} second to get the answer!")
+        case _ if end_time in range(2,60):  
+            print(f"You took {end_time} seconds to get the answer!")  
+        case _ if end_time >= 60:
+            print(end_time)
+            minutes = math.floor(end_time / 60)
+            seconds = (end_time - (minutes * 60))
+            if minutes == 1:
+                print(f"You took {minutes} minute and {seconds} seconds to get the answer!")
+            else:
+                print(f"You took {minutes} minutes and {seconds} seconds to get the answer!")
+
 while is_playing:
-    chances = check_difficulty()
-    is_playing = select_number(chances)
+    chances, start_time = check_difficulty()
+    is_playing = select_number(chances, start_time)
 
 ## Need to add still, timer, hint system, user high score
