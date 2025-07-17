@@ -7,6 +7,7 @@ import math
 print("Welcome to the number guessing game!")
 guess_correct = False
 is_playing = True
+number_list = []
 
 def check_difficulty():
     print("Please select a difficulty level:")
@@ -60,7 +61,12 @@ def select_number(chances, start_time):
         try:
             print("")
             print(f"You have {chances} attempts remaining.")
+            if chances == 1:
+                closest_number = check_list(number_list, random_num)
+                print(f"Your closest guess has been {closest_number}")
             selected_num = int(input("Please select a number between 1 and 100: "))
+            number_list.append(selected_num)
+            print(number_list)
             value_range = check_range(selected_num, 1, 100)
             match value_range:
                 case "Within range":
@@ -68,6 +74,7 @@ def select_number(chances, start_time):
                         print("")
                         print("That is correct, yippie :D")
                         elasped_time = math.ceil(time.time() - start_time)
+                        number_list.clear()
                         game_timer(elasped_time)
                         return restart_game()
                     elif random_num > selected_num:
@@ -104,8 +111,16 @@ def game_timer(end_time):
             else:
                 print(f"You took {minutes} minutes and {seconds} seconds to get the answer!")
 
-while is_playing:
-    chances, start_time = check_difficulty()
-    is_playing = select_number(chances, start_time)
+def check_list(number_list, random_num):
+    closest_number = min(number_list, key=lambda x: abs(x - random_num))
+    return closest_number
 
-## Need to add still, timer, hint system, user high score
+
+while is_playing:
+    try:
+        chances, start_time = check_difficulty()
+        is_playing = select_number(chances, start_time)
+    except:
+        pass
+
+## Need to add: hint system, user high score
