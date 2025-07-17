@@ -8,9 +8,9 @@ print("Welcome to the number guessing game!")
 guess_correct = False
 is_playing = True
 number_list = []
-score_easy = 0 
-score_medium = 0
-score_hard = 0
+score_easy = None
+score_medium = None
+score_hard = None
 difficulty = None
 
 def check_difficulty():
@@ -84,6 +84,7 @@ def select_number(chances, start_time, difficulty):
                         number_list.clear()
                         game_timer(elasped_time)
                         check_score(chances, difficulty)
+                        print("score_easy", score_easy)
                         return restart_game()
                     elif random_num > selected_num:
                         print("")
@@ -136,17 +137,19 @@ def check_score(chances, difficulty):
     match difficulty:
         case "easy":
             score = ((chances - 1)- easy_chances) * -1
-            if score_easy < score:
+            print("score easy: ", score_easy)
+            print("score: ", score)
+            if score_easy > score or score_easy is None:
                 score_easy = score
                 print(f"New easy high score: {score_easy}")
         case "medium":
             score = ((chances - 1)- medium_chances) * -1
-            if score_medium < score:
+            if score_medium > score or score_medium is None:
                 score_medium = score
                 print(f"New medium high score: {score_medium}")
         case "hard":
             score = ((chances - 1)- hard_chances) * -1
-            if score_hard < score:
+            if score_hard < score or score_hard is None:
                 score_hard = score
                 print(f"New hard high score: {score_hard}")
             
