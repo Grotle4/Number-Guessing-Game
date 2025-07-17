@@ -8,6 +8,10 @@ print("Welcome to the number guessing game!")
 guess_correct = False
 is_playing = True
 number_list = []
+score_easy = 0 
+score_medium = 0
+score_hard = 0
+difficulty = None
 
 def check_difficulty():
     print("Please select a difficulty level:")
@@ -21,15 +25,18 @@ def check_difficulty():
         case "easy":
             print("")
             print("You have selected easy difficulty")
-            return 10, start_time
+            difficulty = "easy"
+            return 10, start_time, difficulty
         case "medium":
             print("")
             print("You have selected medium difficulty")
-            return 5, start_time
+            difficulty = "medium"
+            return 5, start_time, difficulty
         case "hard":
             print("")
             print("You have selected hard difficulty")
-            return 3, start_time
+            difficulty = "hard"
+            return 3, start_time, difficulty
         case _:
             print("Difficulty selected is invalid, please select Easy, Medium or Hard")
 
@@ -54,7 +61,7 @@ def restart_game():
         case _ :
             print("not a valid command")
 
-def select_number(chances, start_time):
+def select_number(chances, start_time, difficulty):
     random_num = random.randint(1,100)
     print(random_num)
     while chances > 0:
@@ -76,6 +83,7 @@ def select_number(chances, start_time):
                         elasped_time = math.ceil(time.time() - start_time)
                         number_list.clear()
                         game_timer(elasped_time)
+                        check_score(chances, difficulty)
                         return restart_game()
                     elif random_num > selected_num:
                         print("")
@@ -115,12 +123,42 @@ def check_list(number_list, random_num):
     closest_number = min(number_list, key=lambda x: abs(x - random_num))
     return closest_number
 
+def check_score(chances, difficulty):
+    print("WORKING SCOre")
+    hard_chances = 3
+    medium_chances = 5
+    easy_chances = 10
+
+    global score_easy
+    global score_medium
+    global score_hard
+
+    match difficulty:
+        case "easy":
+            score = ((chances - 1)- easy_chances) * -1
+            if score_easy < score:
+                score_easy = score
+                print(f"New easy high score: {score_easy}")
+        case "medium":
+            score = ((chances - 1)- medium_chances) * -1
+            if score_medium < score:
+                score_medium = score
+                print(f"New medium high score: {score_medium}")
+        case "hard":
+            score = ((chances - 1)- hard_chances) * -1
+            if score_hard < score:
+                score_hard = score
+                print(f"New hard high score: {score_hard}")
+            
+
 
 while is_playing:
+
     try:
-        chances, start_time = check_difficulty()
-        is_playing = select_number(chances, start_time)
+        chances, start_time, difficulty = check_difficulty()
+        is_playing = select_number(chances, start_time, difficulty)
     except:
         pass
 
-## Need to add: hint system, user high score
+## Need to work on, fix user high score, always overwriting despte if score is worse. 
+# also add prevention of duplicate numbers and do not add scores to list that are over 100 or under 0
