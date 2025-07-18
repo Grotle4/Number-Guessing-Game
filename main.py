@@ -72,7 +72,9 @@ def select_number(chances, start_time, difficulty):
                 closest_number = check_list(number_list, random_num)
                 print(f"Your closest guess has been {closest_number}")
             selected_num = int(input("Please select a number between 1 and 100: "))
-            number_list.append(selected_num)
+            is_dupp = check_duplicate(number_list, selected_num)
+            if is_dupp != True:
+                number_list.append(selected_num)
             print(number_list)
             value_range = check_range(selected_num, 1, 100)
             match value_range:
@@ -139,24 +141,29 @@ def check_score(chances, difficulty):
             score = ((chances - 1)- easy_chances) * -1
             print("score easy: ", score_easy)
             print("score: ", score)
-            if score_easy > score or score_easy is None:
+            if score_easy is None or score_easy > score:
                 score_easy = score
                 print(f"New easy high score: {score_easy}")
         case "medium":
             score = ((chances - 1)- medium_chances) * -1
-            if score_medium > score or score_medium is None:
+            if score_medium is None or score_medium > score:
                 score_medium = score
                 print(f"New medium high score: {score_medium}")
         case "hard":
             score = ((chances - 1)- hard_chances) * -1
-            if score_hard < score or score_hard is None:
+            if score_hard is None or score_hard < score:
                 score_hard = score
                 print(f"New hard high score: {score_hard}")
             
 
+def check_duplicate(number_list, selected_num):
+    for item in number_list:
+        if item == selected_num:
+            print("You have already selected this number, try again!")
+            return True
+
 
 while is_playing:
-
     try:
         chances, start_time, difficulty = check_difficulty()
         is_playing = select_number(chances, start_time, difficulty)
